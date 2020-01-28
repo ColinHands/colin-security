@@ -72,8 +72,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private FormAuthenticationConfig formAuthenticationConfig;
 	
-//	@Autowired
-//	private Set<BrowserSecurityConfigCallback> configCallbacks;
+	@Autowired
+	private Set<BrowserSecurityConfigCallback> configCallbacks;
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -82,9 +82,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-//		if(CollectionUtils.isNotEmpty(configCallbacks)) {
-//			configCallbacks.forEach(callback -> callback.config(http));
-//		}
+		if(CollectionUtils.isNotEmpty(configCallbacks)) {
+			configCallbacks.forEach(callback -> callback.config(http));
+		}
 		
 		formAuthenticationConfig.configure(http);
 

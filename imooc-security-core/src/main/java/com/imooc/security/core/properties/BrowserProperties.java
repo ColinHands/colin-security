@@ -3,12 +3,15 @@
  */
 package com.imooc.security.core.properties;
 
+import lombok.Data;
+
 /**
  * 浏览器环境配置项
  * 
  * @author zhailiang
  *
  */
+@Data
 public class BrowserProperties {
 	
 	/**
@@ -41,62 +44,4 @@ public class BrowserProperties {
 	 * 只在signInResponseType为REDIRECT时生效
 	 */
 	private String singInSuccessUrl;
-	
-
-	public String getSignInPage() {
-		return signInPage;
-	}
-
-	public void setSignInPage(String loginPage) {
-		this.signInPage = loginPage;
-	}
-
-	public LoginResponseType getSignInResponseType() {
-		return signInResponseType;
-	}
-
-	public void setSignInResponseType(LoginResponseType loginType) {
-		this.signInResponseType = loginType;
-	}
-
-	public int getRememberMeSeconds() {
-		return rememberMeSeconds;
-	}
-
-	public void setRememberMeSeconds(int rememberMeSeconds) {
-		this.rememberMeSeconds = rememberMeSeconds;
-	}
-
-	public String getSignUpUrl() {
-		return signUpUrl;
-	}
-
-	public void setSignUpUrl(String signUpUrl) {
-		this.signUpUrl = signUpUrl;
-	}
-
-	public SessionProperties getSession() {
-		return session;
-	}
-
-	public void setSession(SessionProperties session) {
-		this.session = session;
-	}
-
-	public String getSignOutUrl() {
-		return signOutUrl;
-	}
-
-	public void setSignOutUrl(String signOutUrl) {
-		this.signOutUrl = signOutUrl;
-	}
-
-	public String getSingInSuccessUrl() {
-		return singInSuccessUrl;
-	}
-
-	public void setSingInSuccessUrl(String singInSuccessUrl) {
-		this.singInSuccessUrl = singInSuccessUrl;
-	}
-	
 }

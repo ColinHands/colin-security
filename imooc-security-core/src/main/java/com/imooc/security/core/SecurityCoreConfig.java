@@ -19,10 +19,4 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableConfigurationProperties(CSecurityProperties.class)
 public class SecurityCoreConfig {
 
-    // Colin 加的 不知道最后有没有移动
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 }
