@@ -18,6 +18,8 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 /**
  * 短信登录配置
  * 
@@ -35,8 +37,8 @@ public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapt
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
-	@Autowired
+
+	@Resource
 	private PersistentTokenRepository persistentTokenRepository;
 	
 	/* (non-Javadoc)
