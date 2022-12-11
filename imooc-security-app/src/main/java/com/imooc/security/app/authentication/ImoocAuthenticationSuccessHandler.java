@@ -3,14 +3,8 @@
  */
 package com.imooc.security.app.authentication;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +13,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
-import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.OAuth2Request;
-import org.springframework.security.oauth2.provider.TokenRequest;
+import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * APP环境下认证成功处理器
@@ -50,6 +43,8 @@ public class ImoocAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
     @Autowired
     private AuthorizationServerTokenServices authorizationServerTokenServices;
 
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
     /*
      * (non-Javadoc)
      *
@@ -71,17 +66,19 @@ public class ImoocAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
             throw new UnapprovedClientAuthenticationException("请求头中无client信息");
         }
 
+        // 解析clientId、clientS信息
         String[] tokens = extractAndDecodeHeader(header, request);
         assert tokens.length == 2;
 
         String clientId = tokens[0];
         String clientSecret = tokens[1];
 
+        // 在数据库里拿client信息
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(clientId);
 
         if (clientDetails == null) {
             throw new UnapprovedClientAuthenticationException("clientId对应的配置信息不存在:" + clientId);
-        } else if (!StringUtils.equals(clientDetails.getClientSecret(), clientSecret)) {
+        } else if (!passwordEncoder.matches(clientSecret, clientDetails.getClientSecret())) {
             throw new UnapprovedClientAuthenticationException("clientSecret不匹配:" + clientId);
         }
 

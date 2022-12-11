@@ -3,8 +3,10 @@
  */
 package com.imooc.security.server;
 
+import com.imooc.security.core.properties.CSecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +16,6 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
-
-import com.imooc.security.core.properties.CSecurityProperties;
 
 /**
  * @author zhailiang
@@ -81,13 +81,10 @@ public class TokenStoreConfig {
 		 * @return
 		 */
 		@Bean
+		@ConditionalOnMissingBean(TokenEnhancer.class)
 		@ConditionalOnBean(TokenEnhancer.class)
 		public TokenEnhancer jwtTokenEnhancer(){
 			return new TokenJwtEnhancer();
 		}
-		
 	}
-	
-	
-
 }
